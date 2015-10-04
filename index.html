@@ -15,8 +15,8 @@
     ctx,
     frames=0,
     i,
-    s,
-    x=3, y=3;
+    s = null,
+    x=null, y=null;
 
     var
     EMPTY = 0,
@@ -28,7 +28,7 @@
           {type:"SCORE", val:n}],
        [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
           {type:"SCORE", val:n}],
-       [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:1}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
+       [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
           {type:"SCORE", val:n}],
        [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},{type:"BRICK", val:0}, {type:"BRICK", val:0},
           {type:"SCORE", val:n}],
@@ -36,162 +36,185 @@
           {type:"SCORE", val:n}],
        [{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}]
       ];
-    /*A=[[{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}],
-    ];
-      for(var i=1; i<=5; i++){
-        A.push([]);
-        A[i].push([{type:"SCORE", val:n}]);
-        for(var j=1; j<=5; j++){
-          A[i].push({type:"BRICK", val:0});
-        }
-       A[i].push({type:"SCORE", val:n});
-      }
-    //A.push([[{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}]]);
-    */
-
 
     var map_build = function(ctx) {
-      for(i=1; i<=6; i++) {
-        ctx.fillStyle = "#00000";
-        ctx.beginPath();
-        ctx.moveTo(i*70, 0);
-        ctx.lineTo(i*70, 491);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(0, i*70);
-        ctx.lineTo(491, i*70);
-        ctx.stroke();
-      }
+        for(i=1; i<=6; i++) {
+            ctx.fillStyle = "#00000";
+            ctx.beginPath();
+            ctx.moveTo(i*70, 0);
+            ctx.lineTo(i*70, 491);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, i*70);
+            ctx.lineTo(491, i*70);
+            ctx.stroke();
+        }
     }
 
     var check = function(){
 
     }
 
-    var onpress = function(e) {
-      var a = x, b = y;
-        switch(e.keyCode){
-        case 40:  //down
-          if(y<=4){
-            A[y][x].val = 0;
-            y+=1;
-            A[y][x].val=1;
-            A[0][x].val-=1;
-            A[6][x].val+=1;
-          }
-          break;
+    var move = function(code) {
+        switch(code){
+            case 40:  //down
+                if(y<=4){
+                    A[y][x].val = 0;
+                    y+=1;
+                    A[y][x].val=1;
+                    A[0][x].val-=1;
+                    A[6][x].val+=1;
+                    return 1;
+                }
+                return 0;
+            break
 
-        case 38: //up
-          if(y>=2) {
-            A[y][x].val = 0;
-            y-=1;
-            A[y][x].val = 1;
-            A[0][x].val+=1;
-            A[6][x].val-=1;
-          }
-          break;
+            case 38: //up
+                if(y>=2) {
+                    A[y][x].val = 0;
+                    y-=1;
+                    A[y][x].val = 1;
+                    A[0][x].val+=1;
+                    A[6][x].val-=1;
+                    return 1;
+                }
+                return 0;
+            break
 
-        case 39: //right
-          if(x<=4) {
-            A[y][x].val = 0;
-            x+=1;
-            A[y][x].val = 1;
-            A[y][0].val-=1;
-            A[y][6].val+=1;
-          }
-          break;
+            case 39: //right
+                if(x<=4) {
+                    A[y][x].val = 0;
+                    x+=1;
+                    A[y][x].val = 1;
+                    A[y][0].val-=1;
+                    A[y][6].val+=1;
+                    return 1;
+                }
+                return 0
+            break
 
-        case 37:  //left
-          if(x>=2) {
-            A[y][x].val = 0;
-            x-=1;
-            A[y][x].val = 1;
-            A[y][6].val-=1;
-            A[y][0].val+=1;
-          }
-          break;
+            case 37:  //left
+                if(x>=2) {
+                    A[y][x].val = 0;
+                    x-=1;
+                    A[y][x].val = 1;
+                    A[y][6].val-=1;
+                    A[y][0].val+=1;
+                    return 1;
+                }
+                return 0;
+            break
 
-        case 32:  //SpaceBar
-          //P.teleport();
-            break;
+            case 32:  //SpaceBar
+              //P.teleport();
+            break
 
+            default:
+                console.log("default");
+                return 0;
+            break
         }
-        if(A[a][b] != A[x][y])
-            s++;
+    }
+
+    var draw=function() {
+        var r=70;
+        for(var i=0; i<=6; i++) {
+            for(var j=0; j<=6; j++) {
+                switch (A[i][j].type) {
+                    case "BRICK":
+                        switch(A[i][j].val) {
+                            case EMPTY:
+                                ctx.fillStyle = "#F7F8E0";
+                                ctx.fillRect(j*r+2, i*r+2, k, k);
+                            break;
+
+                            case EXIST:
+                                ctx.fillStyle = "#A1C436";
+                                ctx.fillRect(j*r+7, i*r+7, k-10, k-10);
+                            break;
+                        }
+                    break;
+
+                    case "SCORE":
+                        ctx.fillStyle = "#FDFFE3";
+                        ctx.fillRect(j*r+2, i*r+2, k, k);
+                        ctx.fillStyle = "#332F3E";
+                        ctx.font="20px Verdana";
+                        ctx.fillText(A[i][j].val, j*r+24, i*r+45);
+                    break;
+                  }
+              }
+          }
+          ctx.fillStyle = "#E6E3BB";
+          ctx.fillRect(100, 490, 350, 50);
+          ctx.fillStyle = "#332F3E";
+          ctx.font="25px Verdana";
+          ctx.fillText("Kоличество ходов: "+s, 100, 510);
+    }
+
+
+
+    var onpress = function(e) {
+        s += move(e.keyCode);
         draw();
     }
 
 
-    var main=function() {
-      canvas=document.createElement("canvas");
-      document.getElementById('field').appendChild(canvas);
-      canvas.width=500;
-      canvas.height=600;
-      ctx = canvas.getContext("2d");
-      map_build(ctx);
-      s = 0;
-      draw();
-      document.addEventListener("keydown", onpress);
-      //loop();
+    function getRandom(){
+        return Math.random();
     }
 
-    var draw=function() {
-     var color;
-     var r=70;
-     //var i, j;
-      for(var i=0; i<=6; i++) {
-        for(var j=0; j<=6; j++) {
-      //console.log(A[i][j].type);
-          switch (A[i][j].type) {
-            case "BRICK":
-              switch(A[i][j].val) {
-                case EMPTY:
-                  ctx.fillStyle = "#F7F8E0";
-                  ctx.fillRect(j*r+2, i*r+2, k, k);
-                  break;
-                case EXIST:
-                  ctx.fillStyle = "#A1C436";
-                  ctx.fillRect(j*r+7, i*r+7, k-10, k-10);
-                  break;
-              }
-              break;
+    var len = 100;
+    var index = 0;
+    var slowMotion = function(R) {
+        move(R[index]);
+        draw();
+        index++;
+        console.log(x, y);
+        window.clearInterval(t);
+        var t = setTimeout(function() {
+            if(index<len){
+                slowMotion(R);
+            }
+        }, 25);
+    }
 
-            case "SCORE":
-              ctx.fillStyle = "#FDFFE3";
-              ctx.fillRect(j*r+2, i*r+2, k, k);
-              ctx.fillStyle = "#332F3E";
-              ctx.font="20px Verdana";
-              ctx.fillText(A[i][j].val, j*r+24, i*r+45);
-              break;
-          }
+    var initGame = function(x0, y0) {
+        canvas=document.createElement("canvas");
+        document.getElementById('field').appendChild(canvas);
+        canvas.width=500;
+        canvas.height=600;
+        ctx = canvas.getContext("2d");
+        map_build(ctx);
+        draw();
+        document.addEventListener("keydown", onpress);
 
+        x = x0;
+        y = y0;
+        A[y][x].val = 1;
+        var R = new Array();
+        for(var i=0; i<len; i++) {
+            var r = getRandom();
+            var m = null;
+            if(r<0.25) {
+                m = 37;
+            } else if(0.25<=r && r<0.5){
+                m = 38;
+            } else if(0.5<=r && r<0.75) {
+                m = 39;
+            } else {
+                m = 40;
+            }
+            //console.log(m);
+            R.push(m);
         }
-      }
-      ctx.fillStyle = "#E6E3BB";
-      ctx.fillRect(100, 490, 350, 50);
-      ctx.fillStyle = "#332F3E";
-      ctx.font="25px Verdana";
-      ctx.fillText("Kоличество ходов: "+s, 100, 510);
+        slowMotion(R);
+        s = 0;
     }
 
 
+    initGame(3, 3);
 
-
-    main();
-
-    /*  for(var i=0; i<=4; i+=4){
-        for(var j=0; j<=4; j+=1){
-           var btn = document.createElement("DIV");
-            btn.setAttribute("id", "button");
-            btn.style.background='#0099FF';
-            btn.style.position = "absolute";
-            btn.style.width = "50px";
-            btn.style.height ="50px";
-            btn.style.top = i*100+20+"px";
-            btn.style.left =j*100+20+"px";
-            document.getElementById('field').appendChild(btn);
-        }
-    }*/
 </script>
 
 </body>
