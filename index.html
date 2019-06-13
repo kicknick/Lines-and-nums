@@ -286,10 +286,9 @@
       // alert("you swiped on element with id '"+el+"' to "+d+" direction");
     }
 
-    detectswipe(document.body, myfunction);
-    // document.body.ontouchmove = function (e) {
-    //   e.preventDefault();
-    // }
+    document.body.ontouchend = (e) => {
+        e.preventDefault();
+    };
 
 
 
