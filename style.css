@@ -1,7 +1,5 @@
-html, body {margin: 0; height: 100%; overflow: hidden;}
-body.noScroll {
-      overflow: hidden;
-}
+/*html, body {margin: 0; height: 100%; overflow: hidden;}*/
+
 #main {
     position: absolute;
 }
