@@ -11,18 +11,19 @@
 
 <script>
     var
+    minSide = Math.min(document.documentElement.clientHeight, width=document.documentElement.clientWidth),
     canvas,
     ctx,
     frames=0,
     i,
-    s = null,
-    x=null, y=null;
+    s = 0,
+    x=0, y=0;
 
     var
     EMPTY = 0,
     EXIST = 1,
     n = 0,
-    k = 66,
+    r = minSide/8
     A=[[{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}],
        [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
           {type:"SCORE", val:n}],
@@ -38,9 +39,11 @@
       ];
 
     var map_build = function(ctx) {
-        for(i=1; i<=6; i++) {
-            ctx.fillStyle = "#00000";
+        for(i=1; i<7; i++) {
+            // ctx.fillStyle = "#00000";
             ctx.beginPath();
+            // ctx.moveTo(i*70, 0);
+            // ctx.lineTo(i*70, 491);
             ctx.moveTo(i*70, 0);
             ctx.lineTo(i*70, 491);
             ctx.stroke();
@@ -117,40 +120,51 @@
     }
 
     var draw=function() {
-        var r=70;
-        for(var i=0; i<=6; i++) {
-            for(var j=0; j<=6; j++) {
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(550, 50, 100, 100);
+    ctx.fillStyle = "white";
+    ctx.fillRect(550, 50, 100, 100);
+
+        for(var i=0; i<7; i++) {
+            for(var j=0; j<7; j++) {
                 switch (A[i][j].type) {
                     case "BRICK":
                         switch(A[i][j].val) {
                             case EMPTY:
-                                ctx.fillStyle = "#F7F8E0";
-                                ctx.fillRect(j*r+2, i*r+2, k, k);
+                                ctx.strokeStyle = "black";
+                                ctx.strokeRect(j*r, i*r, r, r);
+                                ctx.fillStyle = "white";
+                                ctx.fillRect(j*r, i*r, r, r);
                             break;
 
                             case EXIST:
-                                ctx.fillStyle = "#A1C436";
-                                ctx.fillRect(j*r+7, i*r+7, k-10, k-10);
+                                ctx.fillStyle = "black";
+                                ctx.fillRect(j*r, i*r, r, r);
+                                
+                                ctx.fillStyle = "white";
+                                ctx.font="20px Tahoma";
+                                ctx.textAlign = 'center';
+                                ctx.fillText(s, j*r+r/2, i*r+r/2+10)
                             break;
                         }
                     break;
 
                     case "SCORE":
+                        ctx.strokeStyle = "black";
+                        ctx.strokeRect(j*r, i*r, r, r);
                         ctx.fillStyle = "#FDFFE3";
-                        ctx.fillRect(j*r+2, i*r+2, k, k);
-                        ctx.fillStyle = "#332F3E";
-                        ctx.font="20px Verdana";
-                        ctx.fillText(A[i][j].val, j*r+24, i*r+45);
+                        ctx.fillRect(j*r, i*r, r, r);
+                        
+                        ctx.fillStyle = "black";
+                        ctx.textAlign = 'center';
+                        ctx.font="20px Tahoma";
+                        ctx.fillText(A[i][j].val, j*r+32, i*r+45);
                     break;
                   }
               }
           }
-          ctx.fillStyle = "#E6E3BB";
-          ctx.fillRect(100, 490, 350, 50);
-          ctx.fillStyle = "#332F3E";
-          ctx.font="25px Verdana";
-          ctx.fillText("Kоличество ходов: "+s, 100, 510);
     }
+
 
 
 
@@ -176,16 +190,16 @@
             if(index<len){
                 slowMotion(R);
             }
-        }, 25);
+        }, 0);
     }
 
     var initGame = function(x0, y0) {
         canvas=document.createElement("canvas");
         document.getElementById('field').appendChild(canvas);
-        canvas.width=500;
-        canvas.height=600;
+        canvas.width = minSide
+        canvas.height = minSide
         ctx = canvas.getContext("2d");
-        map_build(ctx);
+        // map_build(ctx);
         draw();
         document.addEventListener("keydown", onpress);
 
@@ -211,7 +225,6 @@
         slowMotion(R);
         s = 0;
     }
-
 
     initGame(3, 3);
 

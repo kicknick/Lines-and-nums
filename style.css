@@ -1,21 +1,19 @@
 body {
-    background: #E6E3BB;
 }
 
 #field {
     position: absolute;
-    width: 500px;
-    height: 600px;
-    left: 10px;
-    top: 10px;
+    width: 100vmin;
+    height: 100vmin;
 }
 
 canvas {
+    position: relative;
     /*display: block;
         position: absolute;*/
     margin: auto;
-    top: 0;
+/*    top: 0;
     bottom: 0;
     left: 0;
-    right: 0;
+    right: 0;*/
 }
