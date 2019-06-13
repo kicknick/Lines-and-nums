@@ -289,7 +289,7 @@
     detectswipe(document.body, myfunction);
 
     document.body.addEventListener("touchmove", function(event) {
-        // event.preventDefault();
+        event.preventDefault();
         event.stopPropagation();
     }, false);
 
