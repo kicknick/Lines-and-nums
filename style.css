@@ -1,4 +1,4 @@
-html, body {margin: 0; height: 100%; overflow: hidden; touch-action: none;}
+html, body {margin: 0; height: 100%; overflow: hidden;}
 
 #main {
     position: absolute;
