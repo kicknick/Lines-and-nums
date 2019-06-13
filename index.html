@@ -2,12 +2,13 @@
 <HTML>
 <head>
   <meta charset="UTF-8" />
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
   <title>kitkat5</title>
 </head>
 <body>
-  <div id="field" id="field"></div>
-
+  <div id="main">
+    <div id="field" id="field"></div>
+  </div>
 
 <script>
     var
@@ -59,110 +60,113 @@
     }
 
     var move = function(code) {
-        switch(code){
-            case 40:  //down
-                if(y<=4){
-                    A[y][x].val = 0;
-                    y+=1;
-                    A[y][x].val=1;
-                    A[0][x].val-=1;
-                    A[6][x].val+=1;
-                    return 1;
-                }
-                return 0;
-            break
+      switch(code){
+          case 40:  //down
+              A[y][x].val = 0;
+              if(y<=4) y+=1;
+              else  y=1;
+              A[y][x].val=1;
+              A[0][x].val-=1;
+              A[6][x].val+=1;
+              return 1;
+          break
 
-            case 38: //up
-                if(y>=2) {
-                    A[y][x].val = 0;
-                    y-=1;
-                    A[y][x].val = 1;
-                    A[0][x].val+=1;
-                    A[6][x].val-=1;
-                    return 1;
-                }
-                return 0;
-            break
+          case 38: //up
+              A[y][x].val = 0;
+              if(y>=2) y-=1;
+              else y = 5;
+              A[y][x].val = 1;
+              A[0][x].val+=1;
+              A[6][x].val-=1;
+              return 1;
+          break
 
-            case 39: //right
-                if(x<=4) {
-                    A[y][x].val = 0;
-                    x+=1;
-                    A[y][x].val = 1;
-                    A[y][0].val-=1;
-                    A[y][6].val+=1;
-                    return 1;
-                }
-                return 0
-            break
+          case 39: //right
+              A[y][x].val = 0;
+              if(x<=4) x+=1;
+              else x = 1;
+              A[y][x].val = 1;
+              A[y][0].val-=1;
+              A[y][6].val+=1;
+              return 1;
+          break
 
-            case 37:  //left
-                if(x>=2) {
-                    A[y][x].val = 0;
-                    x-=1;
-                    A[y][x].val = 1;
-                    A[y][6].val-=1;
-                    A[y][0].val+=1;
-                    return 1;
-                }
-                return 0;
-            break
+          case 37:  //left
+              A[y][x].val = 0;
+              if(x>=2) x-=1;
+              else x = 5;
+              A[y][x].val = 1;
+              A[y][6].val-=1;
+              A[y][0].val+=1;
+              return 1;
+          break
 
-            case 32:  //SpaceBar
-              //P.teleport();
-            break
+          case 32:  //SpaceBar
+            //P.teleport();
+            return 0;
+          break
 
-            default:
-                console.log("default");
-                return 0;
-            break
-        }
+          default:
+              console.log("default");
+              return 0;
+          break
+      }
     }
 
     var draw=function() {
     // ctx.strokeStyle = "black";
     // ctx.strokeRect(550, 50, 100, 100);
-    // ctx.fillStyle = "white";
+    // a = 250;
+    // ctx.fillStyle = "rgb("+a+","+a+","+a+")";
     // ctx.fillRect(550, 50, 100, 100);
 
-        for(var i=0; i<7; i++) {
-            for(var j=0; j<7; j++) {
-                switch (A[i][j].type) {
-                    case "BRICK":
-                        switch(A[i][j].val) {
-                            case EMPTY:
-                                ctx.strokeStyle = "black";
-                                ctx.strokeRect(j*r, i*r, r, r);
-                                ctx.fillStyle = "white";
-                                ctx.fillRect(j*r, i*r, r, r);
-                            break;
-
-                            case EXIST:
-                                ctx.fillStyle = "black";
-                                ctx.fillRect(j*r, i*r, r, r);
-                                
-                                ctx.fillStyle = "white";
-                                ctx.font="20px Tahoma";
-                                ctx.textAlign = 'center';
-                                ctx.fillText(s, j*r+r/2, i*r+r/2+10)
-                            break;
-                        }
-                    break;
-
-                    case "SCORE":
+      for(var i=0; i<7; i++) {
+        for(var j=0; j<7; j++) {
+          switch (A[i][j].type) {
+            case "BRICK":
+                switch(A[i][j].val) {
+                    case EMPTY:
                         ctx.strokeStyle = "black";
                         ctx.strokeRect(j*r, i*r, r, r);
-                        ctx.fillStyle = "#FDFFE3";
+                        ctx.fillStyle = "white";
                         ctx.fillRect(j*r, i*r, r, r);
-                        
-                        ctx.fillStyle = "black";
-                        ctx.textAlign = 'center';
-                        ctx.font="20px Tahoma";
-                        ctx.fillText(A[i][j].val, j*r+32, i*r+45);
                     break;
-                  }
-              }
+
+                    case EXIST:
+                        ctx.fillStyle = "black";
+                        ctx.fillRect(j*r, i*r, r, r);
+                        //←, →, ↑, ↓
+                        ctx.fillStyle = "white";
+                        ctx.font="20px Tahoma";
+                        ctx.textAlign = 'center';
+                        ctx.fillText(s, j*r+r/2, i*r+r/2+10)
+                        console.log(i, j)
+                        if(A[i][0].val < A[i][6].val) ctx.fillText("←", j*r+10, i*r+r/2+10)
+                          else if(A[i][0].val > A[i][6].val) ctx.fillText("→", j*r+r-10, i*r+r/2+10)
+                            //else {ctx.fillText("←", j*r+10, i*r+r/2+10); ctx.fillText("→", j*r+r-10, i*r+r/2+10)}
+                        if(A[0][j].val < A[6][j].val) ctx.fillText("↑", j*r+r/2, i*r+r/2-10)
+                          else if(A[0][j].val > A[6][j].val) ctx.fillText("↓", j*r+r/2, i*r+r-5)
+
+                    break;
+                }
+            break;
+
+            case "SCORE":
+                ctx.strokeStyle = "black";
+                ctx.strokeRect(j*r, i*r, r, r);
+                //ctx.fillStyle = "#FDFFE3";
+                a = 256 - Math.abs(A[i][j].val) * 30;
+                ctx.fillStyle ="rgb("+a+","+a+","+a+")";
+                ctx.fillRect(j*r, i*r, r, r);
+                
+                ctx.fillStyle = "black";
+                ctx.textAlign = 'center';
+                ctx.font="20px Tahoma";
+                //ctx.fillText(Math.abs(A[i][j].val), j*r+32, i*r+45);
+            break;
           }
+        }
+      }
     }
 
 
@@ -190,7 +194,7 @@
             if(index<len){
                 slowMotion(R);
             }
-        }, 0);
+        }, 1);
     }
 
     var initGame = function(x0, y0) {
