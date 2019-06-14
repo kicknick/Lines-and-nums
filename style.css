@@ -1,6 +1,7 @@
 /*html, body {margin: 0; height: 100%; overflow: hidden;}*/
 body {
-
+    overflow-y: hidden; // hide vertical
+    overflow-x: hidden; // hide horizontal
 }
 #main {
     position: absolute;
