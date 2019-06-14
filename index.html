@@ -10,7 +10,6 @@
   <div id="main">
     <div id="field" id="field"></div>
   </div>
-
 <script>
     var
     minSide = Math.min(document.documentElement.clientHeight, width=document.documentElement.clientWidth),
@@ -241,6 +240,22 @@
 
     initGame(3, 3);
 
+    // setTime = function() {
+    //   //console.log( window.innerHeight , document.documentElement.clientHeight ); // вся ширина окна
+    //   // console.log( document.documentElement.clientWidth ); // ширина минус прокрутка
+
+    //   var scrollHeight = Math.max(
+    //     document.body.scrollHeight, document.documentElement.scrollHeight,
+    //     document.body.offsetHeight, document.documentElement.offsetHeight,
+    //     document.body.clientHeight, document.documentElement.clientHeight
+    //   );
+    //   console.log(scrollHeight)
+    // }
+    // refreshIntervalId = setInterval(setTime, 1000);
+
+
+
+
     function detectswipe(ele,func) {
       swipe_det = new Object();
       swipe_det.sX = 0; swipe_det.sY = 0; swipe_det.eX = 0; swipe_det.eY = 0;
@@ -263,7 +278,9 @@
       },false);
       ele.addEventListener('touchend',function(e){
         //horizontal detection
-        if ((((swipe_det.eX - min_x > swipe_det.sX) || (swipe_det.eX + min_x < swipe_det.sX)) && ((swipe_det.eY < swipe_det.sY + max_y) && (swipe_det.sY > swipe_det.eY - max_y) && (swipe_det.eX > 0)))) {
+        console.log(e)
+        console.log(document.body.getBoundingClientRect().top)
+          if ((((swipe_det.eX - min_x > swipe_det.sX) || (swipe_det.eX + min_x < swipe_det.sX)) && ((swipe_det.eY < swipe_det.sY + max_y) && (swipe_det.sY > swipe_det.eY - max_y) && (swipe_det.eX > 0)))) {
           if(swipe_det.eX > swipe_det.sX) direc = "r";
           else direc = "l";
         }
@@ -287,14 +304,17 @@
       // alert("you swiped on element with id '"+el+"' to "+d+" direction");
     }
 
-    detectswipe(document.body, myfunction);
+    //detectswipe(document.body, myfunction);
+
+
+
 
     // document.body.addEventListener("touchmove", function(event) {
     //     event.preventDefault();
     //     event.stopPropagation();
     // }, false);
 
-
+document.body.style.overflow = "hidden"
 
 
 </script>
