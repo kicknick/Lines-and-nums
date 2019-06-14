@@ -278,8 +278,8 @@
       },false);
       ele.addEventListener('touchend',function(e){
         //horizontal detection
-        console.log(e)
-        console.log(document.body.getBoundingClientRect().top)
+        // console.log(e)
+        // console.log(document.body.getBoundingClientRect().top)
           if ((((swipe_det.eX - min_x > swipe_det.sX) || (swipe_det.eX + min_x < swipe_det.sX)) && ((swipe_det.eY < swipe_det.sY + max_y) && (swipe_det.sY > swipe_det.eY - max_y) && (swipe_det.eX > 0)))) {
           if(swipe_det.eX > swipe_det.sX) direc = "r";
           else direc = "l";
@@ -304,7 +304,7 @@
       // alert("you swiped on element with id '"+el+"' to "+d+" direction");
     }
 
-    detectswipe(document.body, myfunction);
+    detectswipe(document.getElementById("main"), myfunction);
 
 
 
