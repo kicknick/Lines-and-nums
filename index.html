@@ -304,17 +304,17 @@
       // alert("you swiped on element with id '"+el+"' to "+d+" direction");
     }
 
-    detectswipe(document.body, myfunction);
+    detectswipe(document.getElementById("main"), myfunction);
 
 
 
 
-    document.body.addEventListener("touchmove", function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }, false);
+    // document.body.addEventListener("touchmove", function(event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    // }, false);
 
-    document.body.style.overflow = "hidden"
+    // document.body.style.overflow = "hidden"
 
 
 </script>
