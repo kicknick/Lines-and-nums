@@ -18,29 +18,43 @@
     frames=0,
     i,
     s = 0,
-    x=0, y=0;
+    x=2, y=2;
+    size = 3;
 
     var
     EMPTY = 0,
     EXIST = 1,
     n = 0,
     r = minSide/8
-    A=[[{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}],
-       [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
-          {type:"SCORE", val:n}],
-       [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
-          {type:"SCORE", val:n}],
-       [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
-          {type:"SCORE", val:n}],
-       [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},{type:"BRICK", val:0}, {type:"BRICK", val:0},
-          {type:"SCORE", val:n}],
-       [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0},  {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
-          {type:"SCORE", val:n}],
-       [{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}]
-      ];
+
+    size = 3
+    A=[[{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}],
+     [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
+        {type:"SCORE", val:n}],
+     [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, 
+        {type:"SCORE", val:n}],
+     [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
+        {type:"SCORE", val:n}],
+     [{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n},  {type:"BRICK", val:null}]
+    ];
+    // size = 5
+    // A=[[{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}],
+    //    [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
+    //       {type:"SCORE", val:n}],
+    //    [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
+    //       {type:"SCORE", val:n}],
+    //    [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},{type:"BRICK", val:0}, {type:"BRICK", val:0},
+    //       {type:"SCORE", val:n}],
+    //    [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0},  {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
+    //       {type:"SCORE", val:n}],
+    //    [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0},  {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
+    //       {type:"SCORE", val:n}],
+    //    [{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}]
+    //   ];
+
 
     var map_build = function(ctx) {
-        for(i=1; i<7; i++) {
+        for(i=1; i<8; i++) {
             // ctx.fillStyle = "#00000";
             ctx.beginPath();
             // ctx.moveTo(i*70, 0);
@@ -56,10 +70,19 @@
     }
 
     var check = function(){
-
+      s = 0;
+      for(i=1; i<size; i++) {
+        s++;
+        if(A[0][i].val != 0 || A[i][0].val != 0 || A[size][i].val != 0 || A[i][size].val != 0) break;
+      }
+      if(s == 20) {
+        alert("WELL DONE!")
+      }
+      //console.log(s)
     }
 
     var move = function(code) {
+      check();
       if(Number.isInteger(code)) {
         if(code == 40) code = "d"
           else if(code == 38) code = "u"
@@ -69,40 +92,40 @@
       switch(code){
           case "d":  //down
               A[y][x].val = 0;
-              if(y<=4) y+=1;
-              else  y=1;
+              if(y < size) y+=1;
+              else y=1;
               A[y][x].val=1;
               A[0][x].val-=1;
-              A[6][x].val+=1;
+              A[size+1][x].val+=1;
               return 1;
           break
 
           case "u": //up
               A[y][x].val = 0;
-              if(y>=2) y-=1;
-              else y = 5;
+              if(y > 1) y-=1;
+              else y = size;
               A[y][x].val = 1;
               A[0][x].val+=1;
-              A[6][x].val-=1;
+              A[size+1][x].val-=1;
               return 1;
           break
 
           case "r": //right
               A[y][x].val = 0;
-              if(x<=4) x+=1;
+              if(x < size) x+=1;
               else x = 1;
               A[y][x].val = 1;
               A[y][0].val-=1;
-              A[y][6].val+=1;
+              A[y][size+1].val+=1;
               return 1;
           break
 
           case "l":  //left
               A[y][x].val = 0;
-              if(x>=2) x-=1;
-              else x = 5;
+              if(x > 1) x-=1;
+              else x = size;
               A[y][x].val = 1;
-              A[y][6].val-=1;
+              A[y][size+1].val-=1;
               A[y][0].val+=1;
               return 1;
           break
@@ -126,8 +149,9 @@
     // ctx.fillStyle = "rgb("+a+","+a+","+a+")";
     // ctx.fillRect(550, 50, 100, 100);
 
-      for(var i=0; i<7; i++) {
-        for(var j=0; j<7; j++) {
+      for(var i=0; i<size+2; i++) {
+        for(var j=0; j<size+2; j++) {
+          //console.log(A[i][j], i, j)
           switch (A[i][j].type) {
             case "BRICK":
                 switch(A[i][j].val) {
@@ -147,11 +171,11 @@
                         ctx.textAlign = 'center';
                         ctx.fillText(s, j*r+r/2, i*r+r/2+10)
                         // console.log(i, j)
-                        if(A[i][0].val < A[i][6].val) ctx.fillText("←", j*r+10, i*r+r/2+10)
-                          else if(A[i][0].val > A[i][6].val) ctx.fillText("→", j*r+r-10, i*r+r/2+10)
+                        if(A[i][0].val < A[i][size+1].val) ctx.fillText("←", j*r+10, i*r+r/2+10)
+                          else if(A[i][0].val > A[i][size+1].val) ctx.fillText("→", j*r+r-10, i*r+r/2+10)
                             //else {ctx.fillText("←", j*r+10, i*r+r/2+10); ctx.fillText("→", j*r+r-10, i*r+r/2+10)}
-                        if(A[0][j].val < A[6][j].val) ctx.fillText("↑", j*r+r/2, i*r+r/2-10)
-                          else if(A[0][j].val > A[6][j].val) ctx.fillText("↓", j*r+r/2, i*r+r-5)
+                        if(A[0][j].val < A[size+1][j].val) ctx.fillText("↑", j*r+r/2, i*r+r/2-10)
+                          else if(A[0][j].val > A[size+1][j].val) ctx.fillText("↓", j*r+r/2, i*r+r-5)
 
                     break;
                 }
@@ -165,9 +189,9 @@
                 ctx.fillStyle ="rgb("+a+","+a+","+a+")";
                 ctx.fillRect(j*r, i*r, r, r);
                 
-                ctx.fillStyle = "black";
-                ctx.textAlign = 'center';
-                ctx.font="20px Tahoma";
+                // ctx.fillStyle = "black";
+                // ctx.textAlign = 'center';
+                // ctx.font="20px Tahoma";
                 //ctx.fillText(Math.abs(A[i][j].val), j*r+32, i*r+45);
             break;
           }
@@ -190,6 +214,8 @@
 
     var len = 100;
     var index = 0;
+
+
     var slowMotion = function(R) {
         move(R[index]);
         draw();
@@ -199,24 +225,23 @@
             if(index<len){
                 slowMotion(R);
             }
-        }, 1);
+        }, 0);
     }
 
-    var initGame = function(x0, y0) {
+    var initGame = function(x, y) {
         canvas=document.createElement("canvas");
         document.getElementById('field').appendChild(canvas);
         canvas.width = minSide
         canvas.height = minSide
         ctx = canvas.getContext("2d");
         // map_build(ctx);
-        draw();
+        //draw();
         document.addEventListener("keydown", function(e){
             s += move(e.keyCode);
             draw();
         });
 
-        x = x0;
-        y = y0;
+
         A[y][x].val = 1;
         var R = new Array();
         for(var i=0; i<len; i++) {
@@ -238,7 +263,7 @@
         s = 0;
     }
 
-    initGame(3, 3);
+    initGame(x, y);
 
     // setTime = function() {
     //   //console.log( window.innerHeight , document.documentElement.clientHeight ); // вся ширина окна
