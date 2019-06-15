@@ -20,14 +20,12 @@
     s = 0,
     x=2, y=2;
     size = 3;
-
     var
     EMPTY = 0,
     EXIST = 1,
     n = 0,
-    r = minSide/8
-
-    size = 3
+    size = 3,
+    r = minSide/(size+2),  //length of one block 
     A=[[{type:"BRICK", val:null}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"SCORE", val:n}, {type:"BRICK", val:null}],
      [{type:"SCORE", val:n}, {type:"BRICK", val:0}, {type:"BRICK", val:0}, {type:"BRICK", val:0},
         {type:"SCORE", val:n}],
