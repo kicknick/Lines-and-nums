@@ -174,7 +174,7 @@
                             //else {ctx.fillText("←", j*r+10, i*r+r/2+10); ctx.fillText("→", j*r+r-10, i*r+r/2+10)}
                         if(A[0][j].val < A[size+1][j].val) ctx.fillText("↑", j*r+r/2, i*r+r/2-10)
                           else if(A[0][j].val > A[size+1][j].val) ctx.fillText("↓", j*r+r/2, i*r+r-5)
-
+                          // ctx.fillText("|||||||", j*r+r/2, i*r+r-20)
                     break;
                 }
             break;
@@ -282,9 +282,9 @@
     function detectswipe(ele,func) {
       swipe_det = new Object();
       swipe_det.sX = 0; swipe_det.sY = 0; swipe_det.eX = 0; swipe_det.eY = 0;
-      var min_x = 30;  //min x swipe for horizontal swipe
+      var min_x = 5;  //min x swipe for horizontal swipe
       var max_x = 30;  //max x difference for vertical swipe
-      var min_y = 50;  //min y swipe for vertical swipe
+      var min_y = 5;  //min y swipe for vertical swipe
       var max_y = 60;  //max y difference for horizontal swipe
       var direc = "";
       ele.addEventListener('touchstart',function(e){
